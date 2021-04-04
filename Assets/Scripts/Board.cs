@@ -16,6 +16,9 @@ public class Board : MonoBehaviour
     Tile[,] m_allTiles;
     GamePiece[,] m_allGamePieces;
 
+    Tile m_clickedTile;
+    Tile m_targetTile;
+
     void Start()
     {
         m_allTiles = new Tile[width, height];
@@ -92,10 +95,43 @@ public class Board : MonoBehaviour
 
                 if(randomPiece != null)
                 {
+                    randomPiece.GetComponent<GamePiece>().Init(this);
                     PlaceGamePiece(randomPiece.GetComponent<GamePiece>(), i, j);
+                    randomPiece.transform.parent = transform;
                 }
             }
 
         }
+    }
+
+    public void ClickTile(Tile tile)
+    {
+        if(m_clickedTile == null)
+        {
+            m_clickedTile = tile;
+            Debug.Log("clicked tile: " + tile.name);
+        }
+    }
+
+    public void DragToTile(Tile tile)
+    {
+        if(m_clickedTile != null)
+        {
+            m_targetTile = tile;
+        }
+    }
+
+    public void ReleaseTile()
+    {
+        if(m_clickedTile != null && m_targetTile != null)
+        {
+            SwitchTiles(m_clickedTile, m_targetTile);
+        }
+    }
+
+    void SwitchTiles(Tile clickedTile, Tile targetTile)
+    {
+        m_targetTile = null;
+        m_clickedTile = null;
     }
 }
