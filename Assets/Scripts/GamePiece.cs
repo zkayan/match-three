@@ -23,6 +23,21 @@ public class GamePiece : MonoBehaviour
         SmootherStep
     }
 
+    public MatchValue matchValue;
+
+    public enum MatchValue
+    {
+        Yellow,
+        Blue,
+        Magenta,
+        Indigo,
+        Green,
+        Teal,
+        Red,
+        Cyan,
+        Wild
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -77,8 +92,12 @@ public class GamePiece : MonoBehaviour
             if(Vector3.Distance(transform.position, destination) < 0.01f)
             {
                 reachedDestination = true;
-                transform.position = destination;
-                SetCoord((int)destination.x, (int)destination.y);
+
+                if(m_board != null)
+                {
+                    m_board.PlaceGamePiece(this, (int)destination.x, (int)destination.y);
+                }
+
                 break;
             }
 
